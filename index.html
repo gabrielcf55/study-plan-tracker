@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Plano de estudo interativo e rastreador de progresso para certificações. Template reutilizável.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0C1222">
+<title>Plano de Estudo — Progresso</title>
+<link rel="icon" type="image/svg+xml" href="favicons/ring.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme-init.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="header-top">
+      <div class="brand">
+        <span class="brand-mark" data-icon="compass" data-size="22"></span>
+        <div>
+          <span class="header-tag" id="hTag">Plano de Estudo</span>
+          <h1 id="hTitle">Plano de Estudo</h1>
+        </div>
+      </div>
+      <div class="io-btns">
+        <span id="syncStat" class="sync-stat" title="Estado da sincronização"><span class="ico-slot" data-icon="drive" data-size="15"></span><span class="sync-txt">Local</span></span>
+        <button class="io-btn" id="btnExport" type="button"><span data-icon="download" data-size="15"></span>Backup</button>
+        <button class="io-btn" id="btnImport" type="button"><span data-icon="upload" data-size="15"></span>Restaurar</button>
+        <button class="io-btn" id="btnReset" type="button"><span data-icon="reset" data-size="15"></span>Zerar</button>
+        <div class="settings-wrap">
+          <button class="io-btn icon-btn" id="btnSettings" type="button" aria-label="Aparência" data-icon="sliders" data-size="18"></button>
+          <div class="settings-pop" id="settingsPop" role="menu" aria-label="Aparência">
+            <div class="set-label">Modo</div>
+            <div class="seg" id="segMode">
+              <button type="button" data-mode-set="light"><span data-icon="sun" data-size="15"></span>Claro</button>
+              <button type="button" data-mode-set="dark"><span data-icon="moon" data-size="15"></span>Escuro</button>
+            </div>
+            <div class="set-label">Paleta</div>
+            <div class="swatches" id="swatches">
+              <button type="button" class="swatch" data-theme-set="brass"><span class="dot" style="background:#C9A86A"></span>Brass</button>
+              <button type="button" class="swatch" data-theme-set="graphite"><span class="dot" style="background:#2A5FD0"></span>Graphite</button>
+              <button type="button" class="swatch" data-theme-set="ember"><span class="dot" style="background:#BC5A2C"></span>Ember</button>
+            </div>
+            <div class="set-label" style="margin-top:.95rem">Ícone do site</div>
+            <div class="fav-row" id="favRow">
+              <button type="button" class="fav-opt" data-fav="ring" title="Anel de progresso"><img src="favicons/ring.svg" alt="Anel"></button>
+              <button type="button" class="fav-opt" data-fav="route" title="Rota até a meta"><img src="favicons/route.svg" alt="Rota"></button>
+              <button type="button" class="fav-opt" data-fav="target" title="Alvo"><img src="favicons/target.svg" alt="Alvo"></button>
+              <button type="button" class="fav-opt" data-fav="steps" title="Marcos"><img src="favicons/steps.svg" alt="Marcos"></button>
+            </div>
+          </div>
+        </div>
+        <input id="imp" type="file" accept="application/json" hidden>
+      </div>
+    </div>
+    <p class="header-sub" id="hSub"></p>
+  </div>
+</header>
+
+<nav aria-label="Seções do plano">
+  <div class="nav-inner">
+    <button class="nav-btn on" data-tab="dash" type="button"><span data-icon="pin"></span>Onde estou</button>
+    <button class="nav-btn" data-tab="phases" type="button"><span data-icon="layers"></span>Fases</button>
+    <button class="nav-btn" data-tab="timeline" type="button"><span data-icon="calendar"></span>Cronograma</button>
+    <button class="nav-btn" data-tab="mocks" type="button"><span data-icon="clipboard"></span>Mocks</button>
+    <button class="nav-btn" data-tab="routine" type="button"><span data-icon="repeat"></span>Rotina</button>
+    <button class="nav-btn" data-tab="gaps" type="button"><span data-icon="target"></span>Gaps</button>
+    <button class="nav-btn" data-tab="costs" type="button"><span data-icon="wallet"></span>Financeiro</button>
+  </div>
+</nav>
+
+<main>
+  <!-- DASHBOARD -->
+  <section id="tab-dash" class="panel on" aria-label="Onde estou">
+    <div class="dash-top">
+      <div class="ring-wrap">
+        <svg width="128" height="128" viewBox="0 0 120 120" role="img" aria-label="Progresso geral">
+          <circle class="ring-track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/>
+          <circle id="ring" class="ring-fill" cx="60" cy="60" r="52" fill="none" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"
+            transform="rotate(-90 60 60)"/>
+        </svg>
+        <div class="ring-pct"><span class="num" id="ringNum">0%</span><span class="lbl">Concluído</span></div>
+      </div>
+      <div>
+        <div class="dash-now-tag"><span data-icon="pin" data-size="13"></span>Você está aqui</div>
+        <div class="dash-now-phase" id="nowPhase">—</div>
+        <div class="dash-now-meta" id="nowMeta">—</div>
+      </div>
+    </div>
+
+    <div class="dash-cards">
+      <div class="dash-card"><div class="v" id="cDone">0</div><div class="l">Tarefas feitas</div></div>
+      <div class="dash-card"><div class="v" id="cLeft">0</div><div class="l">Tarefas restantes</div></div>
+      <div class="dash-card"><div class="v" id="cMocks">0</div><div class="l">Mocks concluídos</div></div>
+      <div class="dash-card"><div class="v" id="cWeek">—</div><div class="l">Semana estimada</div></div>
+    </div>
+
+    <div class="next-box">
+      <div class="next-title"><span data-icon="zap" data-size="18"></span>Suas próximas ações</div>
+      <div class="next-sub">Os próximos passos da fase atual</div>
+      <div id="nextItems"></div>
+    </div>
+
+    <h2 class="sec">Progresso por fase</h2>
+    <div class="milestones" id="milestones"></div>
+  </section>
+
+  <!-- PHASES -->
+  <section id="tab-phases" class="panel" aria-label="Fases">
+    <p class="lead">As fases vão da orientação ao objetivo final. Marque cada tarefa ao concluir — o painel <strong>Onde estou</strong> usa essas marcações para te localizar. Clique em qualquer tarefa para alternar.</p>
+    <div class="phases-grid">
+      <div class="phase-list" id="psb"></div>
+      <div id="pdt"></div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="tab-timeline" class="panel" aria-label="Cronograma">
+    <p class="lead" id="tlLead"></p>
+    <div class="tl-scale" id="tlScale"></div>
+    <div id="tlRows"></div>
+    <div class="tl-legend">
+      <span data-icon="flag" data-size="16"></span><span>Etapas de exame são marcos fixos — só agende quando os mocks confirmarem prontidão.</span>
+    </div>
+    <div class="tip-box" style="margin-top:1.4rem">
+      <div class="tip-title"><span data-icon="clock" data-size="17"></span>Como ler este cronograma</div>
+      <div class="numstep"><span class="n">1</span><span><strong>Início:</strong> orientação e pré-requisitos do seu objetivo.</span></div>
+      <div class="numstep"><span class="n">2</span><span><strong>Meio:</strong> avance pelas fases de conteúdo na ordem planejada, nivelando os gaps.</span></div>
+      <div class="numstep"><span class="n">3</span><span><strong>Reta final:</strong> revisão geral e simulados completos no formato real.</span></div>
+      <div class="numstep"><span class="n">4</span><span><strong>Etapa final:</strong> só agende o exame quando os simulados confirmarem prontidão.</span></div>
+    </div>
+  </section>
+
+  <!-- MOCKS -->
+  <section id="tab-mocks" class="panel" aria-label="Mocks">
+    <p class="lead" id="mocksLead"></p>
+    <div class="mock-intro" id="mockFilters"></div>
+    <div id="mockList"></div>
+    <div class="tip-box" id="mockPresentation" style="margin-top:1rem"></div>
+  </section>
+
+  <!-- ROUTINE -->
+  <section id="tab-routine" class="panel" aria-label="Rotina">
+    <p class="lead" id="routineLead"></p>
+    <div id="routineCards"></div>
+    <div class="tip-box" id="routineTips"></div>
+  </section>
+
+  <!-- GAPS -->
+  <section id="tab-gaps" class="panel" aria-label="Gaps">
+    <p class="lead">Marque os tópicos conforme dominar cada um — a barra de cada domínio sobe automaticamente e alimenta o painel principal.</p>
+    <div class="strengths">
+      <span data-icon="checkCircle" data-size="18"></span>
+      <div class="strengths-text"><strong>Pontos fortes já estabelecidos:</strong> <span id="strengthsText"></span></div>
+    </div>
+    <div id="gapList"></div>
+  </section>
+
+  <!-- COSTS -->
+  <section id="tab-costs" class="panel" aria-label="Financeiro">
+    <div class="cost-summary" id="costSummary"></div>
+    <div id="costRows"></div>
+    <p class="cost-note" id="costNote"></p>
+    <div class="strategy-box">
+      <div class="strategy-title" id="strategyTitle"></div>
+      <div id="strategyItems"></div>
+    </div>
+    <p class="foot-note" id="costFoot"></p>
+  </section>
+</main>
+
+<script type="module" src="ui.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
