@@ -1,0 +1,20 @@
+node_modules/
+.vercel
+.env
+.env*.local
+*.log
+.DS_Store
+plano-de-estudo-progresso-*.json
+_nm/
+
+# scripts pessoais não versionados (ex.: identidade git no histórico de commits)
+scripts/local/
+
+# backups de histórico criados por scripts/local/init-history.sh
+.git.backup-*
+
+# preferências locais do Claude Code (não versionar)
+.claude/settings.local.json
+
+# arquivo de teste temporario (remova manualmente)
+.claude/_wtest

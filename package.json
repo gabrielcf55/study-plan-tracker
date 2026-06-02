@@ -1,0 +1,22 @@
+{
+  "name": "study-plan-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Plano de estudo interativo e rastreador de progresso — template orientado a dados. Exemplos em examples/ (Salesforce CTA, Platform App Builder).",
+  "author": "Gabriel Cruz Ferreira (https://forcetricks.com)",
+  "homepage": "https://github.com/gabrielcf55/study-plan-tracker#readme",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "serve": "npx --yes serve .",
+    "test": "node --test",
+    "use-example": "node scripts/use-example.mjs"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
+  }
+}
